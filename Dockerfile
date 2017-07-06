@@ -17,7 +17,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 # Basics
-RUN apt-get -y install pwgen python-setuptools curl git nano sudo unzip openssh-server openssl vim htop
+RUN apt-get -y install python-setuptools curl git nano sudo unzip openssh-server openssl vim htop
 RUN apt-get -y install mysql-server mysql-client nginx php-fpm php-mysql
 
 # MySQL Password
@@ -54,6 +54,13 @@ RUN useradd -m -d /home/${USER} -p $(openssl passwd -1 'password') -s /bin/bash 
 RUN usermod -a -G root ${USER}
 RUN usermod -a -G www-data ${USER}
 RUN usermod -a -G sudo ${USER}
+
+# Powerline Font
+RUN git clone https://github.com/powerline/fonts.git /home/${USER}/fonts
+RUN bash /home/${USER}/fonts/install.sh --silent
+
+# Bash-it
+RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git /home/${USER}/.bash_it
 
 # Supervisor Config
 RUN /usr/bin/easy_install supervisor
